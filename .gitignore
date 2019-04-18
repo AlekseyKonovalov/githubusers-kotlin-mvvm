@@ -63,3 +63,14 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+app/proguard-rules.pro
+app/src/androidTest/java/aleksey/projects/github_users/ExampleInstrumentedTest.kt
+app/src/test/java/aleksey/projects/github_users/ExampleUnitTest.kt
+gradlew
+gradlew.bat

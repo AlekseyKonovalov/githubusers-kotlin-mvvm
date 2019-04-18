@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">github_users</string>
+
+    <string name="sighin_toolbar_title">GithubUsers.SIGNIN</string>
+
+    <string name="github_users_list_toolbar_title">GithubUsers.SEARCH</string>
+
+</resources>
