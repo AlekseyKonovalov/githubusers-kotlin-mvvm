@@ -11,15 +11,23 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class GithubUsersListActivityViewModel(val appPrefs: AppPrefs,
-                                       val userRepository: UserRepository) : ViewModel(), BaseViewModel, LifecycleObserver {
+class GithubUsersListActivityViewModel(
+    val appPrefs: AppPrefs,
+    val userRepository: UserRepository
+) : ViewModel(), BaseViewModel, LifecycleObserver {
 
     private var disposables = CompositeDisposable()
     private var progressState: MutableLiveData<ProgressState> = MutableLiveData()
+    private var userData: MutableLiveData<Pair<String, String>> = MutableLiveData()
 
     override fun getProgressState(): MutableLiveData<ProgressState> {
         return progressState
     }
+
+    fun getUserData(): MutableLiveData<Pair<String, String>> {
+        return userData
+    }
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     override fun dispose() {
@@ -28,25 +36,38 @@ class GithubUsersListActivityViewModel(val appPrefs: AppPrefs,
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun getUserInfo() {
-        if (!(appPrefs.getVkAccessToken().isNullOrEmpty())){
+        if (!(appPrefs.getVkAccessToken().isNullOrEmpty())) {
             getVkUserInfo()
         }
     }
 
-    private fun getVkUserInfo(){
+    private fun getVkUserInfo() {
         //account.getProfileInfoВозвращает информацию о текущем профиле.
-        disposables += userRepository.getVkProfileInfo()
+        disposables += userRepository.getUserInfo()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { progressState.postValue(ProgressState.Loading()) }
             .subscribe(
                 {
                     Timber.d(it.toString())
+                    userData.postValue(
+                        Pair(
+                            "${it.response?.first()?.firstName} ${it.response?.first()?.lastName}",
+                            it.response?.first()?.photo100 ?: ""
+                        )
+                    )
+                    progressState.postValue(ProgressState.Done())
                 },
                 {
                     Timber.e(it.toString())
                     progressState.postValue(ProgressState.Error())
                 }
             )
+    }
+
+    fun clearToken() {
+        appPrefs.cleanVkAccessToken()
+        appPrefs.cleanVkUserId()
     }
 
 

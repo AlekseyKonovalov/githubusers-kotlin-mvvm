@@ -4,6 +4,7 @@ import aleksey.projects.github_users.R
 import aleksey.projects.github_users.base.BaseView
 import aleksey.projects.github_users.base.ProgressState
 import aleksey.projects.github_users.ext.bindView
+import aleksey.projects.github_users.screens.sign_in.startSignInActivity
 import android.animation.LayoutTransition
 import android.content.Context
 import android.content.Intent
@@ -13,16 +14,24 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.transition.TransitionManager
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import org.koin.android.viewmodel.ext.android.viewModel
 
 fun startGithubUsersListActivity(context: Context) {
@@ -40,6 +49,9 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
     private val progressOverlay: RelativeLayout by bindView(R.id.progressOverlay)
     private val rootView: CoordinatorLayout by bindView(R.id.root)
     private val toolbar: Toolbar by bindView(R.id.toolbar)
+    private val drawerLayout: DrawerLayout by bindView(R.id.drawer_layout)
+    private val navigationView: NavigationView by bindView(R.id.nvView)
+    private var drawerToggle: ActionBarDrawerToggle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +74,12 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
         searchBar.layoutTransition = LayoutTransition()
         searchView.maxWidth = Integer.MAX_VALUE
         val searchPlate = searchView.findViewById(R.id.search_plate) as View
-        searchPlate.setBackgroundColor(ContextCompat.getColor(this@GithubUsersListActivityView, android.R.color.transparent))
+        searchPlate.setBackgroundColor(
+            ContextCompat.getColor(
+                this@GithubUsersListActivityView,
+                android.R.color.transparent
+            )
+        )
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -86,10 +103,27 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
     override fun initToolbar() {
         val spannableTitle = SpannableString(getString(R.string.github_users_list_toolbar_title))
         val dotPosition = spannableTitle.indexOf(".")
-        spannableTitle.setSpan(ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorAccent)), dotPosition + 1, spannableTitle.length, Spannable.SPAN_COMPOSING)
+        spannableTitle.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorAccent)),
+            dotPosition + 1,
+            spannableTitle.length,
+            Spannable.SPAN_COMPOSING
+        )
         toolbar.title = spannableTitle
 
         setSupportActionBar(toolbar)
+
+        toolbar.navigationIcon = ContextCompat.getDrawable(this@GithubUsersListActivityView, R.drawable.ic_menu)
+        drawerToggle = ActionBarDrawerToggle(
+            this@GithubUsersListActivityView,
+            drawerLayout,
+            toolbar,
+            R.string.drawer_open,
+            R.string.drawer_close
+        )
+        drawerToggle?.let {
+            drawerLayout.addDrawerListener(it)
+        }
     }
 
     override fun initViews() {
@@ -97,7 +131,22 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
     }
 
     override fun initListeners() {
-
+        navigationView.setNavigationItemSelectedListener(
+            object : NavigationView.OnNavigationItemSelectedListener {
+                override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.action_logout -> {
+                            viewModel.clearToken()
+                            startSignInActivity(this@GithubUsersListActivityView)
+                            finish()
+                        }
+                        else -> {
+                        }
+                    }
+                    drawerLayout.closeDrawers()
+                    return true
+                }
+            })
     }
 
     override fun initViewModelObserving() {
@@ -119,6 +168,18 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
                     hideProgressBar()
                 }
             }
+        })
+
+        viewModel.getUserData().observe(this, Observer {
+            val userName = findViewById<TextView>(R.id.user_name)
+            userName.text = it.first
+            val userImage = findViewById<ImageView>(R.id.user_image)
+            Picasso.get()
+                .load(it.second)
+                .placeholder(R.drawable.ic_face)
+                .error(R.drawable.ic_face)
+                .transform(CropCircleTransformation())
+                .into(userImage)
         })
     }
 

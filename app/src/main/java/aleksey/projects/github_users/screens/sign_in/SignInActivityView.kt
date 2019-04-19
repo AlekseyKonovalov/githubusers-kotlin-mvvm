@@ -5,6 +5,7 @@ import aleksey.projects.github_users.base.BaseView
 import aleksey.projects.github_users.base.ProgressState
 import aleksey.projects.github_users.ext.bindView
 import aleksey.projects.github_users.screens.github_users_list.startGithubUsersListActivity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
@@ -28,6 +29,14 @@ import com.vk.sdk.util.VKUtil
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
+fun startSignInActivity(context: Context) {
+    context.startActivity(getSignInActivityIntent(context))
+}
+
+fun getSignInActivityIntent(context: Context): Intent {
+    val intent = Intent(context, SignInActivityView::class.java)
+    return intent
+}
 
 class SignInActivityView : AppCompatActivity(), BaseView {
 
