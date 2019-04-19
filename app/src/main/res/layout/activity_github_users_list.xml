@@ -40,20 +40,32 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <RelativeLayout
-                android:id="@+id/progressOverlay"
+        <FrameLayout
+                android:id="@+id/content_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorAccentLight"
-                android:gravity="center"
-                android:visibility="gone">
+                app:layout_behavior="@string/scrolling_view_behavior">
 
-            <ProgressBar
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/github_user_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listItem="@layout/item_resource"/>
 
-        </RelativeLayout>
+            <RelativeLayout
+                    android:id="@+id/progressOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccentLight"
+                    android:gravity="center"
+                    android:visibility="gone">
 
+                <ProgressBar
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"/>
+
+            </RelativeLayout>
+        </FrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -68,6 +80,6 @@
             app:itemBackground="@color/colorPrimaryLight"
             app:itemIconTint="@color/colorPrimaryLight"
             app:itemTextColor="@color/colorWhite"
-            app:menu="@menu/drawer_view" />
+            app:menu="@menu/drawer_view"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -2,6 +2,8 @@
 
     <string name="app_name">github_users</string>
 
+    <string name="scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
     <integer name="com_vk_sdk_AppId">6951804</integer>
 
     <string name="error_try_later">Error, try later</string>
@@ -14,5 +16,8 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="not_yet_available">not yet available</string>
+
 
 </resources>

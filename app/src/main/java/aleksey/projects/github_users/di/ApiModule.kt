@@ -1,6 +1,7 @@
 package aleksey.projects.github_users.di
 
 import aleksey.projects.github_users.data.AppPrefs
+import aleksey.projects.github_users.data.api.GithubApi
 import aleksey.projects.github_users.data.api.VkApi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -16,6 +17,8 @@ import javax.net.ssl.SSLSession
 
 
 private const val VK_API_URL = "https://api.vk.com/"
+private const val GITHUB_API_URL = "https://api.github.com"
+
 private const val KEY_HEADER_EMPLOYEE_ID = "access_token"
 
 
@@ -25,7 +28,7 @@ val apiModule = module {
 
     single { createApiService<VkApi>(get(), VK_API_URL) }
 
-    /*single { createApiService<ClientsApi>(get(), CLIENTS_API_MOCK_URL) }*/
+    single { createApiService<GithubApi>(get(), GITHUB_API_URL) }
 
     factory { createLoggingInterceptor() }
 

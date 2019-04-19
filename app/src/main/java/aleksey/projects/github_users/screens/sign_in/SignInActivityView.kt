@@ -55,8 +55,6 @@ class SignInActivityView : AppCompatActivity(), BaseView {
 
         val fingerprints = VKUtil.getCertificateFingerprint(this, this.packageName)
 
-
-
         initToolbar()
         initViews()
         initListeners()
@@ -81,13 +79,10 @@ class SignInActivityView : AppCompatActivity(), BaseView {
 
     override fun initListeners() {
         signInWithVk.setOnClickListener {
-            viewModel.signInWithVk()
             VKSdk.login(this@SignInActivityView)
         }
         signInWithGoogle.setOnClickListener {
-            //viewModel.signInWithGoogle()
-            startGithubUsersListActivity(this@SignInActivityView)
-            finish()
+            showSnackbar(getString(R.string.not_yet_available))
         }
     }
 

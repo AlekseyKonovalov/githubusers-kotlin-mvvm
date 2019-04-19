@@ -4,6 +4,7 @@ import aleksey.projects.github_users.base.BaseViewModel
 import aleksey.projects.github_users.base.ProgressState
 import aleksey.projects.github_users.data.AppPrefs
 import aleksey.projects.github_users.data.repository.UserRepository
+import aleksey.projects.github_users.screens.github_users_list.models.GithubUser
 import androidx.lifecycle.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -19,6 +20,11 @@ class GithubUsersListActivityViewModel(
     private var disposables = CompositeDisposable()
     private var progressState: MutableLiveData<ProgressState> = MutableLiveData()
     private var userData: MutableLiveData<Pair<String, String>> = MutableLiveData()
+    private var githubUsers: MutableLiveData<List<GithubUser?>> = MutableLiveData()
+
+    fun getGithubUsers(): MutableLiveData<List<GithubUser?>> {
+        return githubUsers
+    }
 
     override fun getProgressState(): MutableLiveData<ProgressState> {
         return progressState
@@ -27,7 +33,6 @@ class GithubUsersListActivityViewModel(
     fun getUserData(): MutableLiveData<Pair<String, String>> {
         return userData
     }
-
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     override fun dispose() {
@@ -69,6 +74,25 @@ class GithubUsersListActivityViewModel(
         appPrefs.cleanVkAccessToken()
         appPrefs.cleanVkUserId()
     }
+
+    fun findGithubUsers(searchQuery: String){
+        disposables += userRepository.searchGithubUsers(searchQuery)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    it.items?.let {
+                        githubUsers.postValue(it)
+                    }
+
+                },
+                {
+                    Timber.e(it.toString())
+                }
+            )
+    }
+
+
 
 
 }

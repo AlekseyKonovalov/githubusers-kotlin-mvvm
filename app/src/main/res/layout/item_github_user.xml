@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/github_user"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="92dp">
+
+    <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+        <ImageView
+                android:id="@+id/github_user_avatar"
+                android:layout_width="90dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_face"/>
+
+        <LinearLayout
+                android:id="@+id/chat_right_side"
+                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/github_user_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="aleksey"
+                    android:textColor="@color/colorWhite"
+                    android:maxLines="1"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+            <TextView
+                    android:id="@+id/github_user_repo_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="https://github.com/AlekseyKonovalov"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
+                    android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="72dp"
+            android:background="@color/colorAccent"/>
+
+</RelativeLayout>
+

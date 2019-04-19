@@ -36,6 +36,7 @@ ext {
     timber_version = "4.7.0"
     logging_interceptor_version = "3.6.0"
     stetho_version = "1.5.1"
+    pagingVersion = '1.0.1'
 }
 
 dependencies {
@@ -91,5 +92,9 @@ dependencies {
     // picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
+
+    //Paging
+    implementation "android.arch.paging:runtime:$pagingVersion"
+    implementation "android.arch.paging:rxjava2:$pagingVersion"
 
 }

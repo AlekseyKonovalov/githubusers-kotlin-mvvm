@@ -4,10 +4,14 @@ import aleksey.projects.github_users.R
 import aleksey.projects.github_users.base.BaseView
 import aleksey.projects.github_users.base.ProgressState
 import aleksey.projects.github_users.ext.bindView
+import aleksey.projects.github_users.screens.github_users_list.adapter.GithubUsersAdapter
+import aleksey.projects.github_users.screens.github_users_list.listener.GithubUserClickListener
+import aleksey.projects.github_users.screens.github_users_list.models.GithubUser
 import aleksey.projects.github_users.screens.sign_in.startSignInActivity
 import android.animation.LayoutTransition
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -28,6 +32,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -52,6 +58,8 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
     private val drawerLayout: DrawerLayout by bindView(R.id.drawer_layout)
     private val navigationView: NavigationView by bindView(R.id.nvView)
     private var drawerToggle: ActionBarDrawerToggle? = null
+    private lateinit var githubUsersAdapter: GithubUsersAdapter
+    private val githubUsersList: RecyclerView by bindView(R.id.github_user_recycler_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,12 +91,11 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                //viewModel.findUsers(query)
+                viewModel.findGithubUsers(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                //viewModel.findUsers(newText)
                 return true
             }
         })
@@ -96,6 +103,7 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
         searchView.setOnCloseListener {
             false
         }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -127,7 +135,17 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
     }
 
     override fun initViews() {
+        githubUsersAdapter = GithubUsersAdapter(this@GithubUsersListActivityView)
+        githubUsersList.layoutManager = LinearLayoutManager(this@GithubUsersListActivityView)
+        githubUsersList.adapter = githubUsersAdapter
+        githubUsersAdapter.itemClickListener = object : GithubUserClickListener {
+            override fun onClick(data: GithubUser) {
+                val uri = Uri.parse(data.htmlUrl)
+                val intent = Intent (Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
 
+        }
     }
 
     override fun initListeners() {
@@ -168,6 +186,10 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
                     hideProgressBar()
                 }
             }
+        })
+
+        viewModel.getGithubUsers().observe(this, Observer {
+            githubUsersAdapter.setItems(it as MutableList<GithubUser>)
         })
 
         viewModel.getUserData().observe(this, Observer {
