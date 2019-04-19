@@ -44,6 +44,7 @@ class GithubUsersListActivityViewModel(val appPrefs: AppPrefs,
                 },
                 {
                     Timber.e(it.toString())
+                    progressState.postValue(ProgressState.Error())
                 }
             )
     }

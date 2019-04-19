@@ -4,10 +4,12 @@
 
     <integer name="com_vk_sdk_AppId">6951804</integer>
 
-    <string name="signin_error_try_later">Ошибка авторизации, попробуйте позже</string>
+    <string name="error_try_later">Error, try later</string>
 
     <string name="sighin_toolbar_title">GithubUsers.SIGNIN</string>
 
     <string name="github_users_list_toolbar_title">GithubUsers.SEARCH</string>
+
+    <string name="search_view_search">Поиск</string>
 
 </resources>

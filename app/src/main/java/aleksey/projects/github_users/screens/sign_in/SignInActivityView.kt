@@ -10,7 +10,10 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.transition.TransitionManager
+import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -32,7 +35,7 @@ class SignInActivityView : AppCompatActivity(), BaseView {
 
     private val rootView: CoordinatorLayout by bindView(R.id.root)
     private val toolbar: Toolbar by bindView(R.id.toolbar)
-
+    private val progressOverlay: RelativeLayout by bindView(R.id.progressOverlay)
     private val signInWithVk: ImageView by bindView(R.id.sign_in_vk)
     private val signInWithGoogle: ImageView by bindView(R.id.sign_in_google)
 
@@ -85,12 +88,17 @@ class SignInActivityView : AppCompatActivity(), BaseView {
                 is ProgressState.Initial -> {
                 }
                 is ProgressState.Loading -> {
+                    showProgressBar()
                 }
                 is ProgressState.Done -> {
+                    hideProgressBar()
                 }
                 is ProgressState.Error -> {
+                    showSnackbar(getString(R.string.error_try_later))
+                    hideProgressBar()
                 }
                 is ProgressState.Finish -> {
+                    hideProgressBar()
                     startGithubUsersListActivity(this@SignInActivityView)
                     finish()
                 }
@@ -111,7 +119,7 @@ class SignInActivityView : AppCompatActivity(), BaseView {
 
                 override fun onError(error: VKError) {
                     Timber.e(error.toString())
-                    showSnackbar(getString(R.string.signin_error_try_later))
+                    showSnackbar(getString(R.string.error_try_later))
                 }
             })
         ) {
@@ -122,6 +130,16 @@ class SignInActivityView : AppCompatActivity(), BaseView {
     private fun showSnackbar(msg: String) {
         val snack = Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG)
         snack.show()
+    }
+
+    private fun showProgressBar() {
+        TransitionManager.beginDelayedTransition(rootView)
+        progressOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        TransitionManager.beginDelayedTransition(rootView)
+        progressOverlay.visibility = View.GONE
     }
 
 }

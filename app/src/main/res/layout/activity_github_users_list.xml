@@ -31,6 +31,19 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <RelativeLayout
+            android:id="@+id/progressOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccentLight"
+            android:gravity="center"
+            android:visibility="gone">
+
+        <ProgressBar
+                android:layout_width="64dp"
+                android:layout_height="64dp" />
+
+    </RelativeLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
