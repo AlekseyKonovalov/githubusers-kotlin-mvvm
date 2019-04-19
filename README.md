@@ -9,3 +9,10 @@
 Фичи на будущее
 - список должен поддерживать пагинацию по 30 элементов на странице
 - при вводе в строку поиска, сделать задержку отправки запросов в 600 миллисекунд
+
+
+
+![](https://github.com/AlekseyKonovalov/githubusers-kotlin-mvvm/blob/master/BjuiZklzeYY.jpg)
+![](https://github.com/AlekseyKonovalov/githubusers-kotlin-mvvm/blob/master/IdWMQ9BcvVE.jpg)
+![](https://github.com/AlekseyKonovalov/githubusers-kotlin-mvvm/blob/master/hxOz06TOpKM.jpg)
+![](https://github.com/AlekseyKonovalov/githubusers-kotlin-mvvm/blob/master/iRKHZ2LaGA0.jpg)
