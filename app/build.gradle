@@ -85,4 +85,6 @@ dependencies {
     //Stetho
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
+    implementation "com.vk:androidsdk:1.6.5"
+
 }

@@ -29,6 +29,9 @@
                 android:name=".screens.github_users_list.GithubUsersListActivityView"
                 android:launchMode="singleTask"
                 android:screenOrientation="portrait"/>
+
+        <activity android:name="com.vk.sdk.VKServiceActivity"
+                  android:label="ServiceActivity" android:theme="@style/VK.Transparent" />
     </application>
 
 </manifest>

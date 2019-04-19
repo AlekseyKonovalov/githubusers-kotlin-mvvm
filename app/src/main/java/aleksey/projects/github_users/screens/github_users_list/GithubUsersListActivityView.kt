@@ -39,8 +39,8 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
         lifecycle.addObserver(viewModel)
 
         initToolbar()
-        initViews()
-        initListeners()
+      /*  initViews()
+        initListeners()*/
         initViewModelObserving()
     }
 
