@@ -11,6 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class GithubUsersListActivityViewModel(
     val appPrefs: AppPrefs,
@@ -79,6 +80,7 @@ class GithubUsersListActivityViewModel(
         disposables += userRepository.searchGithubUsers(searchQuery)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .debounce(250, TimeUnit.MILLISECONDS)
             .subscribe(
                 {
                     it.items?.let {

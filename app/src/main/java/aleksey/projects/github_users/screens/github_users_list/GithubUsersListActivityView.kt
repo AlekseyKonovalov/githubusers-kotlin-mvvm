@@ -96,6 +96,7 @@ class GithubUsersListActivityView : AppCompatActivity(), BaseView {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.findGithubUsers(newText)
                 return true
             }
         })
